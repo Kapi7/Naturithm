@@ -166,6 +166,19 @@ def get_items_for_date(target_date):
     return items
 
 
+def get_due_items():
+    """Return items that are due NOW (date matches today, time has passed)."""
+    now = datetime.now()
+    today_str = now.strftime("%Y-%m-%d")
+    current_time = now.strftime("%H:%M")
+    items = [
+        item for item in SCHEDULE
+        if item["date"] == today_str and item.get("time", "00:00") <= current_time
+    ]
+    items.sort(key=lambda x: x.get("time", "00:00"))
+    return items
+
+
 # ---------------------------------------------------------------------------
 # Posting functions
 # ---------------------------------------------------------------------------
@@ -467,6 +480,7 @@ def main():
     )
     parser.add_argument("--dry-run", action="store_true", help="Preview without posting")
     parser.add_argument("--status", action="store_true", help="Show schedule status")
+    parser.add_argument("--run-due", action="store_true", help="Post only items whose time has passed (for cron)")
     parser.add_argument("--force", metavar="DATE", help="Force post for a specific date (YYYY-MM-DD)")
     args = parser.parse_args()
 
@@ -483,10 +497,38 @@ def main():
         cmd_post(target, dry_run=args.dry_run)
         return
 
-    # Default: post today's content
+    if args.run_due:
+        # Cron mode: only post items whose scheduled time has passed
+        now = datetime.now()
+        print(f"Naturithm Scheduler — {now.strftime('%Y-%m-%d %H:%M')} (cron check)")
+        if not args.dry_run:
+            git_pull()
+        items = get_due_items()
+        if not items:
+            print("  Nothing due right now.")
+            return
+        posted = load_posted()
+        captions = load_captions()
+        for item in items:
+            cid = item["id"]
+            if cid in posted:
+                continue
+            caption = captions.get(cid, "")
+            success = do_post(item, caption, dry_run=args.dry_run)
+            if success and not args.dry_run:
+                posted[cid] = {
+                    "timestamp": now.isoformat(),
+                    "date": item["date"],
+                    "account": item["account"],
+                    "type": item["type"],
+                }
+                save_posted(posted)
+                git_push(f"auto: posted {cid}")
+        return
+
+    # Default: post all of today's content
     today = date.today()
     print(f"Naturithm Scheduler — {today.isoformat()}")
-    print(f"Default post time: 10:00 AM local")
     print()
     cmd_post(today, dry_run=args.dry_run)
 
