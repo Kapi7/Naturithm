@@ -504,15 +504,14 @@ def main():
         if not args.dry_run:
             git_pull()
         items = get_due_items()
-        if not items:
-            print("  Nothing due right now.")
-            return
         posted = load_posted()
+        # Filter to only unposted items
+        pending = [item for item in items if item["id"] not in posted]
+        if not pending:
+            print("  Nothing to post right now.")
+            return
         captions = load_captions()
-        for item in items:
-            cid = item["id"]
-            if cid in posted:
-                continue
+        for item in pending:
             caption = captions.get(cid, "")
             success = do_post(item, caption, dry_run=args.dry_run)
             if success and not args.dry_run:
