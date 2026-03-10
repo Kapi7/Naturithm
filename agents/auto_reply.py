@@ -18,7 +18,7 @@ import socket
 import argparse
 from datetime import datetime, date
 
-import anthropic
+from google import genai
 from dotenv import load_dotenv
 
 # Ensure imports work from project root or agents dir
@@ -219,16 +219,24 @@ def is_question(text):
 
 # ── Reply generation ─────────────────────────────────────────────────────
 
+_genai_client = None
+
+def _get_genai():
+    global _genai_client
+    if _genai_client is None:
+        _genai_client = genai.Client(vertexai=True, project="naturitm", location="us-central1")
+    return _genai_client
+
+
 def generate_reply(comment_text, post_caption, account="oria"):
-    """Generate a reply using Claude in the appropriate voice."""
-    client = anthropic.Anthropic()
+    """Generate a reply using Gemini in the appropriate voice."""
+    client = _get_genai()
 
     if account == "oria":
         system = ORIA_REPLY_SYSTEM_PROMPT
     else:
         system = NATURITHM_REPLY_SYSTEM_PROMPT
 
-    # Build prompt — add question-answer instruction if it's a question
     question_detected = is_question(comment_text)
     instruction = (
         f"Post caption (for context): {post_caption[:300]}\n\n"
@@ -241,13 +249,12 @@ def generate_reply(comment_text, post_caption, account="oria"):
         )
     instruction += "Write a reply. 1-3 sentences max. No hashtags. No emojis unless absolutely natural."
 
-    response = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=200,
-        system=system,
-        messages=[{"role": "user", "content": instruction}]
+    response = client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=instruction,
+        config={"system_instruction": system, "max_output_tokens": 200},
     )
-    return response.content[0].text.strip()
+    return response.text.strip()
 
 
 # ── Main logic ───────────────────────────────────────────────────────────

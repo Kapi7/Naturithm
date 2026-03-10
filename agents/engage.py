@@ -27,12 +27,12 @@ import json
 from datetime import datetime
 from pathlib import Path
 
-# Try to import anthropic for comment generation
+# Try to import genai for comment generation
 try:
-    import anthropic
-    HAS_ANTHROPIC = True
+    from google import genai
+    HAS_GENAI = True
 except ImportError:
-    HAS_ANTHROPIC = False
+    HAS_GENAI = False
 
 # ── Config ──────────────────────────────────────────────────────────────
 
@@ -182,16 +182,13 @@ def get_random_comments(n=5, pillar=None):
 
 
 def generate_smart_comments(hashtags, n=5):
-    """Generate contextual comments using Claude (if available)."""
-    if not HAS_ANTHROPIC:
-        print("Anthropic SDK not available. Using template comments.")
+    """Generate contextual comments using Gemini (if available)."""
+    if not HAS_GENAI:
+        print("Google GenAI SDK not available. Using template comments.")
         return get_random_comments(n)
 
-    client = anthropic.Anthropic()
-    response = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=500,
-        system="""You write genuine Instagram comments for a wellness-focused account.
+    client = genai.Client(vertexai=True, project="naturitm", location="us-central1")
+    system = """You write genuine Instagram comments for a wellness-focused account.
 Rules:
 - Each comment is 1-2 sentences MAX
 - Sound like a real person, not a bot
@@ -200,13 +197,13 @@ Rules:
 - No hashtags
 - Vary the style: some appreciative, some adding insight, some asking a question
 - Never say "nice post", "love this", "great content" or generic phrases
-- Be specific enough to seem genuine but general enough to work on different posts""",
-        messages=[{
-            "role": "user",
-            "content": f"Generate {n} unique, genuine comments I could leave on posts about: {', '.join(hashtags)}. One per line, no numbering."
-        }]
+- Be specific enough to seem genuine but general enough to work on different posts"""
+    response = client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=f"Generate {n} unique, genuine comments I could leave on posts about: {', '.join(hashtags)}. One per line, no numbering.",
+        config={"system_instruction": system, "max_output_tokens": 500},
     )
-    comments = [line.strip() for line in response.content[0].text.strip().split("\n") if line.strip()]
+    comments = [line.strip() for line in response.text.strip().split("\n") if line.strip()]
     return comments[:n]
 
 

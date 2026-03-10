@@ -17,7 +17,7 @@ import socket
 import argparse
 from datetime import datetime
 
-import anthropic
+from google import genai
 from dotenv import load_dotenv
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -166,29 +166,34 @@ def post_comment(media_id, comment_text):
 
 # ── Comment generation ───────────────────────────────────────────────────
 
+_genai_client = None
+
+def _get_genai():
+    global _genai_client
+    if _genai_client is None:
+        _genai_client = genai.Client(vertexai=True, project="naturitm", location="us-central1")
+    return _genai_client
+
+
 def generate_echo_comment(post_caption, commenter_account):
-    """Generate a cross-promotion comment using Claude."""
-    client = anthropic.Anthropic()
+    """Generate a cross-promotion comment using Gemini."""
+    client = _get_genai()
 
     if commenter_account == "oria":
         system = ORIA_ON_NATURITHM_PROMPT
     else:
         system = NATURITHM_ON_ORIA_PROMPT
 
-    response = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=150,
-        system=system,
-        messages=[{
-            "role": "user",
-            "content": (
-                f"Post caption: \"{post_caption[:500]}\"\n\n"
-                "Write a thoughtful, genuine comment on this post. "
-                "1-2 sentences. Reference the actual content."
-            )
-        }]
+    response = client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=(
+            f"Post caption: \"{post_caption[:500]}\"\n\n"
+            "Write a thoughtful, genuine comment on this post. "
+            "1-2 sentences. Reference the actual content."
+        ),
+        config={"system_instruction": system, "max_output_tokens": 150},
     )
-    return response.content[0].text.strip()
+    return response.text.strip()
 
 
 # ── Main logic ───────────────────────────────────────────────────────────
