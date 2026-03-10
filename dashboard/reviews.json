@@ -1,0 +1,72 @@
+{
+  "pancake_reel": {
+    "video_status": "approved",
+    "caption_status": "pending",
+    "video_notes": "",
+    "caption_notes": "",
+    "updated_at": "2026-03-10 16:00"
+  },
+  "garlic_reel": {
+    "video_status": "rejected",
+    "caption_status": "pending",
+    "video_notes": "she is still cutting and not crushing the garlic - need actual crushing motion",
+    "caption_notes": "",
+    "updated_at": "2026-03-10 16:00"
+  },
+  "carousel_running": {
+    "video_status": "approved",
+    "caption_status": "approved",
+    "video_notes": "",
+    "caption_notes": "",
+    "updated_at": "2026-03-10 16:00"
+  },
+  "deodorant_reel": {
+    "video_status": "rejected",
+    "caption_status": "pending",
+    "video_notes": "apply clip still not making sense - need real deodorant application",
+    "caption_notes": "",
+    "updated_at": "2026-03-10 16:00"
+  },
+  "addiction_reel": {
+    "video_status": "approved",
+    "caption_status": "approved",
+    "video_notes": "",
+    "caption_notes": "",
+    "updated_at": "2026-03-10 16:00"
+  },
+  "naturithm_loop1": {
+    "video_status": "approved",
+    "caption_status": "approved",
+    "video_notes": "",
+    "caption_notes": "",
+    "updated_at": "2026-03-10 16:00"
+  },
+  "naturithm_duck": {
+    "video_status": "approved",
+    "caption_status": "pending",
+    "video_notes": "",
+    "caption_notes": "",
+    "updated_at": "2026-03-10 16:00"
+  },
+  "naturithm_loop3": {
+    "video_status": "approved",
+    "caption_status": "pending",
+    "video_notes": "",
+    "caption_notes": "",
+    "updated_at": "2026-03-10 16:00"
+  },
+  "naturithm_fence": {
+    "video_status": "approved",
+    "caption_status": "approved",
+    "video_notes": "",
+    "caption_notes": "",
+    "updated_at": "2026-03-10 16:00"
+  },
+  "naturithm_loop5": {
+    "video_status": "approved",
+    "caption_status": "approved",
+    "video_notes": "",
+    "caption_notes": "",
+    "updated_at": "2026-03-10 16:00"
+  }
+}

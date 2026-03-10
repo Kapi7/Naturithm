@@ -5,3 +5,12 @@ node_modules/
 dist/
 build/
 *.log
+.venv/
+__pycache__/
+*.pyc
+output/
+credentials.json
+*.json.key
+.cache/
+*TEMP_MPY*
+*.tmp
