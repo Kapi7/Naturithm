@@ -21,6 +21,7 @@ from google import genai
 from dotenv import load_dotenv
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from sync import git_pull, git_push
 
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 
@@ -200,6 +201,8 @@ def generate_echo_comment(post_caption, commenter_account):
 
 def run_once(dry_run=False):
     """Check for new posts on both accounts and cross-engage."""
+    git_pull()
+
     echo_pairs = [
         # (source account whose posts we check, commenter account, source IG ID)
         ("naturithm", "oria", NATURITHM_IG_ID),
@@ -259,6 +262,8 @@ def run_once(dry_run=False):
                 print(f"  Error: {e}")
                 log_action("echo", commenter_name, post_id, f"Error: {e}", False)
 
+    if total_echoed > 0:
+        git_push(f"auto: {total_echoed} echoes")
     print(f"\nDone. {total_echoed} posts echoed.")
     return total_echoed
 

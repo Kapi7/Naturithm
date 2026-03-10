@@ -32,6 +32,7 @@ from dotenv import load_dotenv
 load_dotenv(os.path.join(PROJECT_ROOT, ".env"))
 
 from agents.instagram import post_reel, post_photo
+from agents.sync import git_pull, git_push
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -367,6 +368,10 @@ def do_post(item, caption, dry_run=False):
 
 def cmd_post(target_date, dry_run=False):
     """Check and post content for the given date."""
+    # Sync from GitHub first — get latest posted.json from other machine
+    if not dry_run:
+        git_pull()
+
     items = get_items_for_date(target_date)
     if not items:
         print(f"No content scheduled for {target_date}.")
@@ -402,6 +407,8 @@ def cmd_post(target_date, dry_run=False):
                 "type": item["type"],
             }
             save_posted(posted)
+            # Push immediately so the other machine sees it
+            git_push(f"auto: posted {content_id}")
             posted_count += 1
         elif success and dry_run:
             posted_count += 1

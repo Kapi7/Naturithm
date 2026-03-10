@@ -24,6 +24,7 @@ from dotenv import load_dotenv
 # Ensure imports work from project root or agents dir
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from oria_voice import ORIA_REPLY_SYSTEM_PROMPT
+from sync import git_pull, git_push
 
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 
@@ -261,6 +262,8 @@ def generate_reply(comment_text, post_caption, account="oria"):
 
 def run_once(accounts=None, dry_run=False):
     """Check posts for unreplied comments and reply."""
+    git_pull()
+
     if accounts is None:
         accounts = ["oria", "naturithm"]
 
@@ -339,6 +342,8 @@ def run_once(accounts=None, dry_run=False):
         replied_data[key] = list(replied_set)
 
     save_replied(replied_data)
+    if total_new > 0:
+        git_push(f"auto: {total_new} replies")
     print(f"\nDone. {total_new} new replies across all accounts.")
     return total_new
 
