@@ -51,71 +51,45 @@ MEDIA_BASE_URL = os.getenv("MEDIA_BASE_URL", "")
 # ---------------------------------------------------------------------------
 BATCH_START = date(2026, 3, 10)
 
-SCHEDULE = {
-    "oria": [
-        {
-            "day": 1, "date": "2026-03-10", "id": "pancake_reel",
-            "type": "reel", "account": "oria",
-            "file": "pancake_reel/pancake_reel_v2.mp4",
-        },
-        {
-            "day": 2, "date": "2026-03-11", "id": "garlic_reel",
-            "type": "reel", "account": "oria",
-            "file": "garlic_reel/garlic_reel_v2.mp4",
-        },
-        {
-            "day": 3, "date": "2026-03-12", "id": "carousel_running",
-            "type": "carousel", "account": "oria",
-            "slides": [
-                "carousel_running/slide_01_hook.png",
-                "carousel_running/slide_02_problem.png",
-                "carousel_running/slide_03_science.png",
-                "carousel_running/slide_04_body.png",
-                "carousel_running/slide_05_high.png",
-                "carousel_running/slide_06_born.png",
-                "carousel_running/slide_07_start.png",
-                "carousel_running/slide_08_cta.png",
-            ],
-        },
-        {
-            "day": 4, "date": "2026-03-13", "id": "deodorant_reel",
-            "type": "reel", "account": "oria",
-            "file": "deodorant_reel/deodorant_reel_v2.mp4",
-        },
-        {
-            "day": 5, "date": "2026-03-14", "id": "addiction_reel",
-            "type": "reel", "account": "oria",
-            "file": "addiction_reel/addiction_reel_v2.mp4",
-        },
-    ],
-    "naturithm": [
-        {
-            "day": 1, "date": "2026-03-10", "id": "naturithm_loop1",
-            "type": "reel", "account": "naturithm",
-            "file": "naturithm_loop1/naturithm_loop1_v2.mp4",
-        },
-        {
-            "day": 2, "date": "2026-03-11", "id": "naturithm_duck",
-            "type": "reel", "account": "naturithm",
-            "file": "naturithm_duck/naturithm_duck_v3.mp4",
-        },
-        {
-            "day": 3, "date": "2026-03-12", "id": "naturithm_loop3",
-            "type": "reel", "account": "naturithm",
-            "file": "naturithm_loop3/naturithm_loop3_v2.mp4",
-        },
-        {
-            "day": 4, "date": "2026-03-13", "id": "naturithm_fence",
-            "type": "reel", "account": "naturithm",
-            "file": "naturithm_fence/naturithm_fence_v3.mp4",
-        },
-        {
-            "day": 5, "date": "2026-03-14", "id": "naturithm_loop5",
-            "type": "reel", "account": "naturithm",
-            "file": "naturithm_loop5/naturithm_loop5_v2.mp4",
-        },
-    ],
-}
+# Schedule with staggered evening times (Cyprus time, EET UTC+2)
+# Each post gets a unique time between 18:00-23:00 CY
+SCHEDULE = [
+    # Day 1 — Mar 10 (Mon)
+    {"day": 1, "date": "2026-03-10", "time": "18:15", "id": "pancake_reel",
+     "type": "reel", "account": "oria", "file": "pancake_reel/pancake_reel_v2.mp4"},
+    {"day": 1, "date": "2026-03-10", "time": "21:00", "id": "naturithm_loop1",
+     "type": "reel", "account": "naturithm", "file": "naturithm_loop1/naturithm_loop1_v2.mp4"},
+
+    # Day 2 — Mar 11 (Tue)
+    {"day": 2, "date": "2026-03-11", "time": "19:30", "id": "garlic_reel",
+     "type": "reel", "account": "oria", "file": "garlic_reel/garlic_reel_v2.mp4"},
+    {"day": 2, "date": "2026-03-11", "time": "22:00", "id": "naturithm_duck",
+     "type": "reel", "account": "naturithm", "file": "naturithm_duck/naturithm_duck_v3.mp4"},
+
+    # Day 3 — Mar 12 (Wed)
+    {"day": 3, "date": "2026-03-12", "time": "18:45", "id": "carousel_running",
+     "type": "carousel", "account": "oria",
+     "slides": [
+         "carousel_running/slide_01_hook.png", "carousel_running/slide_02_problem.png",
+         "carousel_running/slide_03_science.png", "carousel_running/slide_04_body.png",
+         "carousel_running/slide_05_high.png", "carousel_running/slide_06_born.png",
+         "carousel_running/slide_07_start.png", "carousel_running/slide_08_cta.png",
+     ]},
+    {"day": 3, "date": "2026-03-12", "time": "21:30", "id": "naturithm_loop3",
+     "type": "reel", "account": "naturithm", "file": "naturithm_loop3/naturithm_loop3_v2.mp4"},
+
+    # Day 4 — Mar 13 (Thu)
+    {"day": 4, "date": "2026-03-13", "time": "20:00", "id": "deodorant_reel",
+     "type": "reel", "account": "oria", "file": "deodorant_reel/deodorant_reel_v2.mp4"},
+    {"day": 4, "date": "2026-03-13", "time": "22:45", "id": "naturithm_fence",
+     "type": "reel", "account": "naturithm", "file": "naturithm_fence/naturithm_fence_v3.mp4"},
+
+    # Day 5 — Mar 14 (Fri)
+    {"day": 5, "date": "2026-03-14", "time": "19:00", "id": "addiction_reel",
+     "type": "reel", "account": "oria", "file": "addiction_reel/addiction_reel_v2.mp4"},
+    {"day": 5, "date": "2026-03-14", "time": "21:45", "id": "naturithm_loop5",
+     "type": "reel", "account": "naturithm", "file": "naturithm_loop5/naturithm_loop5_v2.mp4"},
+]
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -184,13 +158,10 @@ def media_url(relative_path):
 
 
 def get_items_for_date(target_date):
-    """Return all schedule items whose date matches target_date (as string YYYY-MM-DD)."""
+    """Return all schedule items whose date matches target_date, sorted by time."""
     target_str = target_date.strftime("%Y-%m-%d") if isinstance(target_date, date) else target_date
-    items = []
-    for account_items in SCHEDULE.values():
-        for item in account_items:
-            if item["date"] == target_str:
-                items.append(item)
+    items = [item for item in SCHEDULE if item["date"] == target_str]
+    items.sort(key=lambda x: x.get("time", "00:00"))
     return items
 
 
@@ -446,36 +417,33 @@ def cmd_status():
     """Show the full schedule status."""
     posted = load_posted()
 
-    print("=" * 70)
-    print("NATURITHM CONTENT SCHEDULE — Batch starting 2026-03-10")
-    print("=" * 70)
+    print("=" * 75)
+    print("NATURITHM CONTENT SCHEDULE — Batch starting 2026-03-10 (times in CY/EET)")
+    print("=" * 75)
 
-    for account_label, account_items in SCHEDULE.items():
-        handle = "@oria_naturithm" if account_label == "oria" else "@naturithm7"
-        print(f"\n{handle}")
-        print("-" * 50)
+    for item in SCHEDULE:
+        content_id = item["id"]
+        status_info = posted.get(content_id)
+        day = item["day"]
+        sched_date = item["date"]
+        sched_time = item.get("time", "?")
+        content_type = item["type"]
+        account = "@oria" if item["account"] == "oria" else "@nat7"
 
-        for item in account_items:
-            content_id = item["id"]
-            status_info = posted.get(content_id)
-            day = item["day"]
-            sched_date = item["date"]
-            content_type = item["type"]
-
-            if status_info:
-                ts = status_info.get("timestamp", "")[:16]
-                status = f"POSTED ({ts})"
+        if status_info:
+            ts = status_info.get("timestamp", "")[:16]
+            status = f"POSTED ({ts})"
+        else:
+            today = date.today()
+            item_date = date.fromisoformat(sched_date)
+            if item_date < today:
+                status = "MISSED"
+            elif item_date == today:
+                status = "DUE TODAY"
             else:
-                today = date.today()
-                item_date = date.fromisoformat(sched_date)
-                if item_date < today:
-                    status = "MISSED"
-                elif item_date == today:
-                    status = "DUE TODAY"
-                else:
-                    status = "upcoming"
+                status = "upcoming"
 
-            print(f"  Day {day} ({sched_date}) | {content_id:<22} | {content_type:<10} | {status}")
+        print(f"  Day {day} {sched_date} {sched_time} | {account:<6} | {content_id:<22} | {content_type:<10} | {status}")
 
     print()
 
