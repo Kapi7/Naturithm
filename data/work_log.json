@@ -40,5 +40,17 @@
     "action": "post_reel",
     "details": "naturithm_loop1 -> naturithm | IG=17929268592220271 FB=1283079453667304",
     "success": true
+  },
+  {
+    "timestamp": "2026-03-10T21:05:51.080631",
+    "action": "dry_run",
+    "details": "Would post reel garlic_reel to oria",
+    "success": true
+  },
+  {
+    "timestamp": "2026-03-10T21:05:51.080882",
+    "action": "dry_run",
+    "details": "Would post reel naturithm_duck to naturithm",
+    "success": true
   }
 ]
